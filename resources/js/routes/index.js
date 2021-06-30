@@ -1,18 +1,10 @@
-import ExampleComponent from "../components/ExampleComponent";
-import test from "../components/test";
+import TeacherRoutes from "./TeacherRoutes";
+import Vue from "vue"
+import VueRouter from "vue-router";
+Vue.use(VueRouter)
 
-export default {
-    mode: "history",
-    routes:[
-        {
-            path:'/',
-            component:ExampleComponent,
-            name:'home'
-        },
-        {
-            path:'/test',
-            component:test,
-            name:'test'
-        }
-    ]
-}
+ export default new VueRouter({
+  modules:{
+      TeacherRoutes
+  }
+})
