@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\ClassRoom;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -50,6 +51,9 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
         });
+
+        Route::model('classroom', ClassRoom::class);
+
     }
 
     /**

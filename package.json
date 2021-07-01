@@ -25,10 +25,17 @@
         "sass-loader": "^11.0.1",
         "vue": "^2.6.12",
         "vue-loader": "^15.9.7",
-        "vue-template-compiler": "^2.6.12"
+        "vue-template-compiler": "^2.6.12",
+        "hover.css": "^2.3.2"
     },
     "dependencies": {
+        "bourbon": "^7.0.0",
+        "bourbon-neat": "^4.0.0",
+        "js-cookie": "^2.2.1",
+        "vform": "^2.1.0",
         "vue-router": "^3.5.2",
-        "vuex": "^3.6.2"
+        "vuex": "^3.6.2",
+        "@fortawesome/fontawesome-free": "^5.15.3",
+        "font-awesome-animation": "^1.1.1"
     }
 }

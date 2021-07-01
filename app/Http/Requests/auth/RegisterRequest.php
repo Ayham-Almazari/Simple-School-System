@@ -28,7 +28,7 @@ class RegisterRequest extends FormRequest
             'name' => 'required|string|max:255|min:3',
             "phone"=>["required","min:11","numeric","unique:teachers",'unique:admins','unique:students',"regex:/^\+9627[789]\d{7}$/"],
             'email' => 'required|string|email|unique:teachers|unique:admins|unique:students|max:255',
-            'password' => ['required','min:8','max:20','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/']
+            'password' => ['confirmed','required','min:8','max:20','regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*(_|[^\w])).+$/']
         ];
             return $cross;
     }

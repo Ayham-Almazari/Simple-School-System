@@ -3,11 +3,12 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
+                    {{check === false?"isnotloggeed":"isloggeed"}}
                     <router-link :to="{ name : 'home' }">Home</router-link>
-                    <a v-if="check">
+                    <a v-if="check === false">
                         <router-link :to="{ name : 'login' }"> Log In </router-link>
                     </a>
-                    <a v-if="check">
+                    <a v-if="check === false">
                         <router-link :to="{ name : 'register' }"> Sign Up </router-link>
                     </a>
                     <router-link :to="{ name : 'TeacherIndex' }"> TeacherIndex </router-link>
@@ -22,11 +23,15 @@
 </template>
 
 <script>
+import {mapGetters} from "vuex"
     export default {
         computed:{
-            showTitle(state) {
-                return this.$store.getters.showTitle;
+            check(state) {
+                return this.$store.getters['auth/check'];
             }
         }
+
+
     }
+
 </script>

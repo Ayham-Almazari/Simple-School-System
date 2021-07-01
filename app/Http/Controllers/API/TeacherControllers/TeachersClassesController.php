@@ -2,97 +2,108 @@
 
 namespace App\Http\Controllers\API\TeacherControllers;
 
+use App\Exceptions\CreateClassRoomException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateClassRoomRequest;
 use App\Http\Resources\ClassRoomResource;
-use App\Models\Teacher;
-use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
+use App\Models\ClassRoom;
+use Exception;
+use Gate;
+use Illuminate\Http\JsonResponse;
 
-class TeachersController extends Controller
+class TeachersClassesController extends Controller
 {
-    private  $Teacher;
-    private $Teacher_classes;
+    protected mixed $Teacher;
+    protected $Teacher_classes_property;
+    protected $Teacher_classes_relational;
 
     public function __construct()
     {
         $this->Teacher = auth('teacher')->user();
-        $this->Teacher_classes = $this->Teacher->Teacher_classes;
+        @$this->Teacher_classes_property = $this->Teacher->Teacher_classes;
+        @$this->Teacher_classes_relational = $this->Teacher->Teacher_classes();
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the ClassRooms.
      *
-     * @return AnonymousResourceCollection
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index()
     {
-        return ClassRoomResource::collection($this->Teacher_classes);
+        return ClassRoomResource::collection($this->Teacher_classes_property);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @return Response
+     * @param CreateClassRoomRequest $request
+     * @return JsonResponse
      */
-    public function store(Request $request)
+    public function store(CreateClassRoomRequest $request)
     {
-        //
+        try {
+            $this->Teacher_classes_relational->create($request->only(['class_name', 'class_description']));
+            return $this->returnSuccessMessage('Classroom Created Successfully .', 201);
+        } catch (Exception $e) {
+            throw new CreateClassRoomException('Classroom Not Created .');
+        }
+
     }
 
     /**
      * Display the specified resource.
      *
-     * @param Teacher $teacher
-     * @return Response
+     * @param ClassRoom $classRoom
+     * @return ClassRoomResource
      */
-    public function show(Teacher $teacher)
+    public function show(ClassRoom $classRoom)
     {
-        //
+        $response = Gate::inspect('authorize_classroom_for_owner_teacher', [ClassRoom::class, $classRoom]);
+        if ($response->denied())
+            return $this->returnErrorMessage($response->message());
+        return new ClassRoomResource($classRoom);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Teacher $teacher
-     * @return Response
-     */
-    public function edit(Teacher $teacher)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Teacher $teacher
+     * @param CreateClassRoomRequest $request
+     * @param ClassRoom $classRoom
      * @return Response
      */
-    public function update(Request $request, Teacher $teacher)
+    public function update(CreateClassRoomRequest $request, ClassRoom $classRoom)
     {
-        //
+        $response = Gate::inspect('authorize_classroom_for_owner_teacher', [ClassRoom::class, $classRoom]);
+        if ($response->denied())
+            return $this->returnErrorMessage($response->message());
+        try {
+            $classRoom->update($request->only(['class_name', 'class_description']));
+            return $this->returnSuccessMessage('Classroom Updated Successfully .', 201);
+        } catch (Exception $e) {
+            throw new CreateClassRoomException('Classroom Not Updated .');
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param Teacher $teacher
-     * @return Response
+     * @param ClassRoom $classRoom
+     * @return JsonResponse
+     * @throws CreateClassRoomException
      */
-    public function destroy(Teacher $teacher)
+    public function destroy(ClassRoom $classRoom)
     {
-        //
+        $response = Gate::inspect('authorize_classroom_for_owner_teacher', [ClassRoom::class, $classRoom]);
+        if ($response->denied())
+            return $this->returnErrorMessage($response->message());
+        try {
+            $classRoom->delete();
+            return $this->returnSuccessMessage('Classroom deleted Successfully .', 200);
+        } catch (Exception $e) {
+            throw new CreateClassRoomException('Classroom Not deleted .');
+        }
     }
 }

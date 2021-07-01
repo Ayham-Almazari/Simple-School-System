@@ -23,8 +23,7 @@
     </head>
     <body class="antialiased">
        <div id="app">
-           <router-link :to="{ name : 'home' }">Home</router-link>
-           <router-link :to="{ name : 'test' }"> test </router-link>
+           <nav_bar></nav_bar>
            <router-view></router-view>
        </div>
        <script src="{{mix('js/app.js')}}" ></script>

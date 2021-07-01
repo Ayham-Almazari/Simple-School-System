@@ -6,9 +6,9 @@ html{
     -ms-overflow-x: hidden;
 }
 body{
-    background-image:url("../imgs/2227044.jpg")  ;
+    background:url("images/school_login_img.png"),rgba($base-color,.4)  ;
     background-position: center ;
-    background-size: auto;
+    background-size: cover;
     height: 100%;
     color: darken($base-color,100%);
 }
@@ -40,7 +40,7 @@ h1{
     border-top:4px solid $base-color;
     width: 500px ;height: 500px;
     padding: 50px 15px 15px 15px;
-    background-color: rgba(white,.9);
+    background-color: rgba(white,.8);
     font-weight: bold;
     @include ele-edit($md){
         width:50%;
@@ -49,12 +49,13 @@ h1{
     input[type=text] , input[type=password]{
     border:none;
     background: none;
-        border-bottom:1px solid $base-color;
-
+    border-bottom:1px solid $base-color;
+    color: black;
+     font-weight: bold;
     }
 
     #admin_login{
-        @extend %button-design;
+        @extend %button-design
     }
     .fa-user,.fa-lock{
         position: relative;
@@ -128,7 +129,7 @@ h1{
         width:50%;
         font-size:3vw;
     }
-    background-color: rgba($base-color,1);
+    background-color: rgba($base-color,.8);
     width: 350px;
     height: 500px;
     p{
@@ -139,16 +140,18 @@ h1{
     }
 
     .btn-to-home{
-       @extend %button-design;
+    @extend %button-design
     }
 }
 %button-design{
-    width: 30% ;
-    background-color: darken($base-color,100%) ;
+    width:30% ;
+    color: whitesmoke;
+    font-weight: bold;
+    background-color: black ;
     padding: 7px;
-    position: absolute;
+    position: relative;
     left: 33%;
-    bottom: 5%;
+    margin-top: 17%;
     border-radius: 31px;
     transition: width .5s ease-in-out;
     &:hover{

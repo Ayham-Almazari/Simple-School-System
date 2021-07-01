@@ -1,12 +1,11 @@
+import Vue from "vue"
+import Vuex from "vuex"
+import auth from "./modules/auth"
+Vue.use(Vuex)
 
-export default {
-    state: {
-        title:" School (SPA) "
-    },
-    getters:{
-        showTitle(state){
-            return state.title
-        }
+export default new Vuex.Store({
+    modules:{
+        auth
     }
+})
 
-}

@@ -1,48 +1,93 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Navbar</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Dropdown
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                    </li>
-                </ul>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
+    <div class="container __center">
+        <div class="row">
+            <div class="login-container hvr-underline-from-center col-lg-6 col-md-6" >
+                <h1 class="text-center m-auto " ><i>Sign In</i></h1>
+<!--                <i id="loading-icon" class="fas fa-spinner faa-spin animated faa-fast"></i>-->
+                <form  @submit.prevent="login" class="padding-right" id="loginForm" @keydown="form.onKeydown($event)">
+                    <AlertError :form="form" message="Invalid Email Or password ." class="text-center"/>
+                    <div class="row mb-2">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+                        <div class="col-sm-10">
+                            <input v-model="form.email" type="text" name="email" class="form-control" id="inputEmail3" placeholder="Email">
+                            <i class="fas fa-user"></i>
+                            <HasError :form="form" field="email" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+                        <div class="col-sm-10">
+                            <input v-model="form.password" type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password" autocomplete="1">
+                            <i class="fas fa-lock"></i>
+                            <HasError :form="form" field="password" />
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-10 offset-sm-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="gridCheck1" >
+                                <label class="form-check-label" for="gridCheck1">
+                                    Remember Me
+                                </label>
+                                <a href="#" class="link-danger col-md-10 offset-md-2" style="margin-left: 19%">forget your password <i class="fas fa-question-circle"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <Button :form="form" class="btn btn-primary mt-4" id="admin_login">
+                        Log In
+                    </Button>
                 </form>
             </div>
+            <div class="col-lg-6 col-md-6 hvr-bubble-float-left plain-login d-none d-sm-block">
+                <p>
+                    <i>Welcome to Tally Bills Company .
+                        You can now log in to join the work. This is the employee portal.</i>
+                </p>
+                <p>
+                    To return to the <u> home page</u> , you can click here .<br>
+                    <router-link :to="{ name : 'register' }"
+                                 class="btn btn-primary btn-to-home mt-2">
+                        Sign Up</router-link>
+                </p>
+            </div>
         </div>
-    </nav>
+    </div>
 </template>
 
 <script>
+import Form from "vform"
+import {
+    Button,
+    HasError,
+    AlertError,
+    AlertSuccess
+} from 'vform/src/components/bootstrap5'
 export default {
-    name: "test"
+    components: {
+        Button, HasError, AlertError,AlertSuccess
+    },
+    data: () => ({
+        form: new Form({
+            email : "",
+            password: "",
+            remember : false
+        })
+    }),
+    methods: {
+         login () {
+              this.form.post('/api/v1/auth/teacher/login').then(({data})=>{
+                this.$store.dispatch('auth/saveToken',{
+                    token: data._token,
+                    remember:this.remember
+                })
+                this.$store.dispatch('auth/fetchUser')
+                this.$router.push({name: 'TeacherIndex'})
+            }).catch((errors)=>{
+                console.log(errors.response.data)
+              })
+        }
+    }
 }
+
 </script>
 
-<style scoped>
-
-</style>

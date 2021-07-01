@@ -22,7 +22,7 @@ class Student  extends Authenticatable implements JWTSubject
 
 
     protected $guarded=[
-
+        'id'
     ];
 
     /**
@@ -67,7 +67,7 @@ class Student  extends Authenticatable implements JWTSubject
         return $this->belongsToMany(Teacher::class,'classes','student_id','teacher_id')
             ->using(Classes::class)
             ->as('class')
-            ->withPivot('id as class_id','teaching_subject','first_term','mid_term','final_term')
+            ->withPivot('id as class_id','classroom_id','teaching_subject','first_term','mid_term','final_term')
             ->withTimestamps();
     }
 
@@ -76,7 +76,7 @@ class Student  extends Authenticatable implements JWTSubject
        return $this->belongsToMany(ClassRoom::class,'classes','student_id','classroom_id')
            ->using(Classes::class)
            ->as('class')
-           ->withPivot('id as class_id','teaching_subject','first_term','mid_term','final_term')
+           ->withPivot('id as class_id','classroom_id','teaching_subject','first_term','mid_term','final_term')
            ->withTimestamps();
     }
 
