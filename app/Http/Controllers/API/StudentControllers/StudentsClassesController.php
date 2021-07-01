@@ -1,85 +1,78 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API\StudentControllers;
 
+use App\Exceptions\StudentExistsinClassroomBeforeException;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\ClassRoomResource;
+use App\Http\Resources\TeacherResource;
+use App\Models\ClassRoom;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
-class StudentsController extends Controller
+class StudentsClassesController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return StudentResource
      */
-    public function index()
+    public function StudentClasses()
     {
-        //
+        return  ClassRoomResource::collection(auth()->user()->Student_Classes);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return StudentResource
      */
-    public function create()
+    public function StudentTeachers()
     {
-        //
+        return  TeacherResource::collection(auth()->user()->Student_Teachers);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Display a listing of the resource.
      *
-     * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return StudentResource
      */
-    public function store(Request $request)
+    public function StudentMaterials()
     {
-        //
+        return  $this->returnData(auth()->user()->Materials);
     }
+
 
     /**
      * Display the specified resource.
      *
      * @param Student $student
      * @return \Illuminate\Http\Response
+     * @throws StudentExistsinClassroomBeforeException
      */
-    public function show(Student $student)
+    public function ClassTeacher(ClassRoom $classRoom)
     {
-        //
+        //if the student is not belongs to the class
+        if (!$classRoom->Class_Students->find(auth()->user()->id))
+            throw new StudentExistsinClassroomBeforeException('Student Is Not Belongs To This Classroom .');
+
+        return new TeacherResource($classRoom->Class_Teacher);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Display the specified resource.
      *
      * @param Student $student
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
+     * @throws StudentExistsinClassroomBeforeException
      */
-    public function edit(Student $student)
+    public function StudentMarks(ClassRoom $classRoom)
     {
-        //
+        //if the student is not belongs to the class
+        if (!$classRoom->Class_Students->find(auth()->user()->id))
+            throw new StudentExistsinClassroomBeforeException('Student Is Not Belongs To This Classroom .');
+        return $this->returnData($classRoom->Class_Students->find(auth()->user()->id)->class->only(['first_term','mid_term','final_term']));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param Student $student
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Student $student)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Student $student
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Student $student)
-    {
-        //
-    }
 }

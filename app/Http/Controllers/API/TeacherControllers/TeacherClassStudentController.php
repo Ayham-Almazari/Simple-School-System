@@ -2,33 +2,26 @@
 
 namespace App\Http\Controllers\API\TeacherControllers;
 
-use App\Exceptions\CreateClassRoomException;
-use App\Exceptions\EmptyClassroomException;
-use App\Exceptions\StudentExistsinClassroomBeforeException;
+use App\Exceptions\{CreateClassRoomException,
+    EmptyClassroomException,
+    StudentExistsinClassroomBeforeException
+};
 use App\Http\Controllers\Controller;
-use App\Http\Resources\{ClassRoomResource, StudentResource};
+use App\Http\Resources\StudentResource;
 use App\Models\{ClassRoom, Student};
 use Exception;
 use Gate;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class TeacherClassStudentController extends Controller
 {
     protected mixed $Teacher;
-    protected $Teacher_classes_property;
-    protected $Teacher_classes_relational;
-    private $Teacher_student_proparety;
     private $Teacher_student_relational;
 
     public function __construct()
     {
-        $this->Teacher = auth('teacher')->user();
-        @$this->Teacher_classes_property = $this->Teacher->Teacher_classes;
-        @$this->Teacher_classes_relational = $this->Teacher->Teacher_classes();
-        @$this->Teacher_student_proparety = $this->Teacher->Teacher_Students;
-        @$this->Teacher_student_relational = $this->Teacher->Teacher_Students();
+       /* $this->Teacher = auth('teacher')->user();
+        @$this->Teacher_student_relational = $this->Teacher->Teacher_Students();*/
     }
 
     /**
@@ -49,7 +42,6 @@ class TeacherClassStudentController extends Controller
     /**
      * Store a newly add student to a class.
      *
-     * @param CreateClassRoomRequest $request
      * @return JsonResponse
      * @throws StudentExistsinClassroomBeforeException
      */
@@ -60,8 +52,8 @@ class TeacherClassStudentController extends Controller
         if ($response->denied())
             return $this->returnErrorMessage($response->message());
         //if student exists in classroom
-       if( $classRoom->Class_Students->find($student->id) )
-           throw new StudentExistsinClassroomBeforeException('Student Is Already Added .');
+        if ($classRoom->Class_Students->find($student->id))
+            throw new StudentExistsinClassroomBeforeException('Student Is Already Added .');
         try {
             $this->Teacher_student_relational->attach($student->id, ['classRoom_id' => $classRoom->id]);
             return $this->returnSuccessMessage("Student {$student->name} Added to {$classRoom->class_name} Classroom Successfully .", 201);
@@ -89,9 +81,10 @@ class TeacherClassStudentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param CreateClassRoomRequest $request
      * @param ClassRoom $classRoom
      * @return JsonResponse
+     * @throws EmptyClassroomException
+     * @throws StudentExistsinClassroomBeforeException
      * @throws CreateClassRoomException
      */
     public function update(Request $request, ClassRoom $classRoom, Student $student)
@@ -103,15 +96,15 @@ class TeacherClassStudentController extends Controller
         if ($response->denied())
             return $this->returnErrorMessage($response->message());
         //if the student is not belongs to the class
-        if( $classRoom->Class_Students->count() === 0)
+        if ($classRoom->Class_Students->count() === 0)
             throw new EmptyClassroomException('This Classroom Is Empty.');
         //if the student is not belongs to the class
-        if( !$classRoom->Class_Students->find($student->id))
+        if (!$classRoom->Class_Students->find($student->id))
             throw new StudentExistsinClassroomBeforeException('Student Is Not Belongs To This Classroom .');
         //edit marks
         try {
             $classRoom->Class_Students()->updateExistingPivot($student->id, $request->only(['first_term', 'mid_term', 'final_term']));
-           return $this->returnSuccessMessage('Student Class marks Updated Successfully .', 201);
+            return $this->returnSuccessMessage('Student Class marks Updated Successfully .', 201);
         } catch (Exception $e) {
             throw new CreateClassRoomException('Student Class marks Updated Failed.');
         }
