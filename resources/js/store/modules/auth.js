@@ -52,7 +52,6 @@ const actions ={
         try {
             const {data} = await axios.get('/api/v1/auth/teacher/user')
             commit(types.FETCH_USER_SUCCESS ,{user:data})
-            console.log(data.user)
         } catch (error) {
             commit(types.FETCH_USER_FAILURE)
         }

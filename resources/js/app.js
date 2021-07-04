@@ -7,8 +7,12 @@ import Vue from "vue";
 import router from './routes/index.js'
 import store from './store/index.js'
 import 'bootstrap';
-window.Vue = require('vue').default;
+import VModal from 'vue-js-modal'
+import SweetModal from 'sweet-modal-vue/src/plugin.js'
 
+window.Vue = require('vue').default;
+Vue.use(VModal)
+Vue.use(SweetModal)
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -21,6 +25,7 @@ window.Vue = require('vue').default;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('nav_bar', require('./components/nav_bar.vue').default);
+Vue.component('ClassroomForm', require('./components/ClassroomForm.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

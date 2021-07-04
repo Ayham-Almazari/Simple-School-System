@@ -2,9 +2,9 @@
     <div class="container __center">
         <div class="row">
             <div class="login-container hvr-underline-from-center col-lg-6 col-md-6" >
-                <h1 class="text-center m-auto " ><i>Sign In</i></h1>
+                <h1 class="text-center m-auto h1-border" ><i>Sign In</i></h1>
 <!--                <i id="loading-icon" class="fas fa-spinner faa-spin animated faa-fast"></i>-->
-                <form  @submit.prevent="login" class="padding-right" id="loginForm" @keydown="form.onKeydown($event)">
+                <form  @submit.prevent="login" class="padding-right loginForm" id="loginForm" @keydown="form.onKeydown($event)">
                     <AlertError :form="form" message="Invalid Email Or password ." class="text-center"/>
                     <div class="row mb-2">
                         <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>

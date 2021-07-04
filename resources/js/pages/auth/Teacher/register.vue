@@ -2,7 +2,7 @@
     <div class="container __center">
         <div class="row">
             <div class="login-container hvr-underline-from-center col-lg-6 col-md-6" >
-                <h1 class="text-center mt-0 " ><i>Sign Up</i></h1>
+                <h1 class="text-center mt-0 h1-border" ><i>Sign Up</i></h1>
                 <!--                <i id="loading-icon" class="fas fa-spinner faa-spin animated faa-fast"></i>-->
                 <form  @submit.prevent="register" class="padding-right mt-5" id="loginForm" @keydown="form.onKeydown($event)">
                     <AlertSuccess :form="form" message="Registered Successfully ." class="text-center"/>

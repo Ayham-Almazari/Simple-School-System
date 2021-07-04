@@ -6,13 +6,13 @@ html{
     -ms-overflow-x: hidden;
 }
 body{
-    background:url("images/school_login_img.png"),rgba($base-color,.4)  ;
+    background:url("images/school_login_img.png"),rgba(#212529,1)  ;
     background-position: center ;
     background-size: cover;
     height: 100%;
     color: darken($base-color,100%);
 }
-h1{
+.h1-border{
     border-bottom:2px solid black;
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
@@ -32,7 +32,7 @@ h1{
         font-size: 3.2vw;
     };
 }
-#loginForm{
+.loginForm{
     margin-top: 20%;
 }
 .login-container{

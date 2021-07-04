@@ -54,8 +54,8 @@ class Handler extends ExceptionHandler
 
 
         if ($exception instanceof ModelNotFoundException) {
-            return response()->json("Not Found",Response::HTTP_NOT_FOUND);
-        }
+            return $this->returnSuccessMessage([
+                'error' => 'Entry for '.str_replace('App\\Models\\', '', $exception->getModel()).' not found'], 404);        }
 
         return parent::render($request, $exception);
     }

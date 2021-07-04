@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/{any?}',function (){
+Route::get('/{any?}/{any1?}/{any2?}/{any3?}/{any4?}/{any5?}/{any6?}',function (){
     return view('welcome');
 });

@@ -17,7 +17,7 @@ class CreateClassRoomsTable extends Migration
             $table->id();
             $table->foreignId('teacher_id')->constrained('teachers')->cascadeOnDelete();
             $table->text('class_name');
-            $table->text('class_description');
+            $table->text('class_description')->nullable();
             $table->timestamps();
             $table->engine = 'InnoDB';
         });

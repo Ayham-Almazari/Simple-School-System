@@ -6990,14 +6990,14 @@ html {
 }
 
 body {
-  background: url(/images/school_login_img.png?00ef5ad41f68aeb139802a93e4ead8b8), rgba(100, 149, 237, 0.4);
+  background: url(/images/school_login_img.png?00ef5ad41f68aeb139802a93e4ead8b8), #212529;
   background-position: center;
   background-size: cover;
   height: 100%;
   color: black;
 }
 
-h1 {
+.h1-border {
   border-bottom: 2px solid black;
   border-bottom-left-radius: 25px;
   border-bottom-right-radius: 25px;
@@ -7020,7 +7020,7 @@ h1 {
   }
 }
 
-#loginForm {
+.loginForm {
   margin-top: 20%;
 }
 

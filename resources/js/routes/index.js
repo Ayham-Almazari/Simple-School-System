@@ -9,6 +9,7 @@ import guest from "../middlewares/guest";
 import auth from "../middlewares/auth";
 import authCheck from "../middlewares/auth-check";
 import middlewarePipeline from "../middlewares/middlewarePipeline";
+import {TeacherRoutes} from "./TeacherRoutes";
 Vue.use(VueRouter)
 const router = new VueRouter({
     mode: "history",
@@ -37,13 +38,15 @@ const router = new VueRouter({
         {
             path:'/teachers',
             component:index,
-            name:'TeacherIndex',
             meta:{
                 middleware: [auth,authCheck]
-            }
+            },
+            children:TeacherRoutes
         }
     ]
 })
+
+//execute middlewares
 router.beforeEach((to , from , next)=>{
     if (!to.meta.middleware ) return next()
     const middleware = to.meta.middleware

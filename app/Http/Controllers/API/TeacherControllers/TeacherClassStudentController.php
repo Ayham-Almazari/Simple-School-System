@@ -20,8 +20,9 @@ class TeacherClassStudentController extends Controller
 
     public function __construct()
     {
-       /* $this->Teacher = auth('teacher')->user();
-        @$this->Teacher_student_relational = $this->Teacher->Teacher_Students();*/
+        $this->Teacher = auth('teacher')->user();
+        if($this->Teacher)
+        @$this->Teacher_student_relational = $this->Teacher->Teacher_Students();
     }
 
     /**

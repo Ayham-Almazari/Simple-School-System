@@ -19,9 +19,11 @@ class TeachersClassesController extends Controller
 
     public function __construct()
     {
-        $this->Teacher = auth('teacher')->user();
-       /* @$this->Teacher_classes_property = $this->Teacher->Teacher_classes;
-        @$this->Teacher_classes_relational = $this->Teacher->Teacher_classes();*/
+         $this->Teacher = auth('teacher')->user();
+         if($this->Teacher):
+         @$this->Teacher_classes_property = $this->Teacher->Teacher_classes;
+         @$this->Teacher_classes_relational = $this->Teacher->Teacher_classes();
+         endif;
     }
 
     /**
@@ -43,12 +45,12 @@ class TeachersClassesController extends Controller
      */
     public function store(CreateClassRoomRequest $request)
     {
-        try {
+        /*try {*/
             $this->Teacher_classes_relational->create($request->only(['class_name', 'class_description']));
             return $this->returnSuccessMessage('Classroom Created Successfully .', 201);
-        } catch (Exception $e) {
-            throw new CreateClassRoomException('Classroom Not Created .');
-        }
+//        } catch (Exception $e) {
+//            throw new CreateClassRoomException('Classroom Not Created .');
+//        }
 
     }
 
