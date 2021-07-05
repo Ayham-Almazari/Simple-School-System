@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\TeacherControllers;
 
+use App\Http\Resources\StuResorce;
 use App\Exceptions\{CreateClassRoomException,
     EmptyClassroomException,
     StudentExistsinClassroomBeforeException
@@ -28,7 +29,7 @@ class TeacherClassStudentController extends Controller
     /**
      * Display a listing of the ClassRooms.
      *
-     * @return AnonymousResourceCollection
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function index(ClassRoom $classRoom)
     {
@@ -37,6 +38,16 @@ class TeacherClassStudentController extends Controller
         if ($response->denied())
             return $this->returnErrorMessage($response->message());
         return StudentResource::collection($classRoom->Class_Students()->orderBy("id", "asc")->get());
+    }
+
+    /**
+     * Display a listing of the ClassRooms.
+     *
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function AllStudents()
+    {
+        return StuResorce::collection(Student::all());
     }
 
 

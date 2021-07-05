@@ -2,20 +2,25 @@ import axios from "axios";
 import TeacherClassesDataService from "./HTTP_SERVICE/TeacherClassesDataService";
 const state ={
     ClassStudents:[],
-    ClassStudent :null
+    ClassStudent :null,
+    loading:false
 }
 
 const getters = {
     ClassStudents:state =>state.ClassStudents,
     ClassStudent:state =>state.ClassStudent,
+    isLoading:state =>state.loading
 }
 
 const mutations = {
+
     fetchTeacherClassroomStudents(state , {ClassStudents}) {
         state.ClassStudents = ClassStudents.data
     },
     fetchTeacherClassroomStudent(state , {ClassStudent}) {
         state.ClassStudent = ClassStudent.data
+        state.loading = false
+
     },
 
 }
@@ -29,11 +34,13 @@ const actions = {
         })
         },
     fetchTeacherClassroomStudent({commit}, {classID, stuID}){
+        state.loading = true
         TeacherClassesDataService.showStudent(classID,stuID).then(({data})=>{
-            console.log(data)
-            commit("fetchTeacherClassroomStudents",{ClassStudent:data})
+            commit("fetchTeacherClassroomStudent",{ClassStudent:data})
+                state.loading = false
         }).catch ((err)=>{
             console.log(err)
+            state.loading = false
         })
     },
     updateTeacherClassroomStudentMark(classID,stuID ,data){
@@ -50,7 +57,7 @@ const actions = {
             console.log(err)
         })
     },
-    removeStudentFromClassroom(classID,stuID){
+    removeStudentFromClassroom({commit},{classID,stuID}){
         TeacherClassesDataService.removeStudentFromClass(classID,stuID).then(({data})=>{
             console.log(data)
         }).catch ((err)=>{

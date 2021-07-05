@@ -7,7 +7,7 @@ export const TeacherRoutes =  [
     {
         path: "",
         component:Classrooms,
-        name:'TeacherIndex',
+        name:'TeacherIndex'
     },
     {
         path: "classrooms/:classroom",
