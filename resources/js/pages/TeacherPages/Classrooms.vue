@@ -3,6 +3,7 @@
         <button class="btn btn-dark" @click="show" id="AddNewClassRoom"
         ><i class="fa fa-plus"></i> Classroom
         </button>
+        <pulse-loader  :loading="isLoading && (classrooms === null)" color="#FFFFFF" size="15px"></pulse-loader>
         <div class="row mt-5 ">
             <div class="col-sm-6 mt-2" v-for="classroom in classrooms" :key="classroom.id">
                 <div class="card">
@@ -51,6 +52,7 @@
 import {VueEditor, Quill} from "vue2-editor";
 import {mapGetters} from "vuex"
 import {SweetModal, SweetModalTab} from 'sweet-modal-vue'
+import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 import Form from "vform"
 import {
     Button,
@@ -69,11 +71,13 @@ export default {
         SweetModal,
         SweetModalTab,
         Button, HasError, AlertError, AlertSuccess,
-        VueEditor
+        VueEditor,
+        PulseLoader
     },
     computed: {
         ...mapGetters({
-            classrooms: 'TeacherClasses/Classrooms'
+            classrooms: 'TeacherClasses/Classrooms',
+            isLoading:"TeacherClasses/isLoading"
         })
     },
     mounted() {

@@ -1,13 +1,15 @@
 import axios from "axios";
 import TeacherClassesDataService from "./HTTP_SERVICE/TeacherClassesDataService";
 const state ={
-    Classrooms:[],
-    Classroom:[]
+    Classrooms:null,
+    Classroom:[],
+    isLoading:false
 }
 
 const getters = {
     Classrooms:state => state.Classrooms,
     Classroom:state => state.Classroom,
+    isLoading:state =>state.isLoading
 }
 
 const mutations = {
@@ -21,11 +23,14 @@ const mutations = {
 
 const actions = {
      fetchTeacherClasses({commit}){
+         state.isLoading=true
          TeacherClassesDataService.getAll().then(({data})=>{
              commit("fetchTeacherClasses",{Classrooms:data})
+             state.isLoading=false
          }).catch ((err)=>{
             console.log(err)
-        })
+             state.isLoading=false
+         })
     },
     async fetchTeacherClass({commit},id){
         try {

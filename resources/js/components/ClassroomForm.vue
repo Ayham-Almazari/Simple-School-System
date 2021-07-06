@@ -18,7 +18,7 @@
             </div>
             <div class="d-flex justify-content-center">
                 <Button :form="form" class="btn btn-dark mt-4">
-                    Create Classroom
+                    Update Classroom
                 </Button>
             </div>
         </div>

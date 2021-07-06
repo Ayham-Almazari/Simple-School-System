@@ -45,9 +45,13 @@ class TeacherClassStudentController extends Controller
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function AllStudents()
+    public function AllStudents( $classId , $student_name = "NOTHING_TO_SEARCH" )
     {
-        return StuResorce::collection(Student::all());
+        return StuResorce::collection(Student::where('name',"like","%".$student_name."%")->take(4)->get()->reject(
+            fn($student)=> $student->Student_Classes->contains($classId) === true
+        )->map(
+            fn($student)=> ["id"=>$student->id , 'name'=>$student->name]
+        ));
     }
 
 
@@ -142,3 +146,4 @@ class TeacherClassStudentController extends Controller
         }
     }
 }
+

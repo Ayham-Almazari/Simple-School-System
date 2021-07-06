@@ -74,13 +74,13 @@ Route::group([
     });
 
 
-    // Owner AUTH ROUTES
+    // Teacher AUTH ROUTES
     Route::group([
         'prefix' => 'teacher',
     ],function (){
         //rout without restricted access auth
         Route::post('login'      ,      [TeacherAuth::class,'login']    );
-        Route::post('register'   ,      [TeacherAuth::class,'register'] );
+        Route::get('register'   ,      [TeacherAuth::class,'register'] );
         //routes must have valid access token and user must logged in
         Route::middleware(['auth:teacher'])->group(function () {
             Route::post('logout'   ,    [TeacherAuth::class,'logout']   );

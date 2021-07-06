@@ -1,6 +1,16 @@
 import http from "../HTTP_SERVICE/HTTP-COMMON";
 
 class TeacherClassesDataService {
+    //AuthRoutes
+    getUserAuth(){
+        return http.get("/auth/teacher/user");
+    }
+
+    logout(){
+        return http.get("/auth/teacher/logout");
+    }
+
+    //Teacher Classrooms
     getAll() {
         return http.get("/teacher/classrooms");
     }
@@ -24,6 +34,9 @@ class TeacherClassesDataService {
     //Class Students
     getAllStudents(id)  {
         return http.get(`/teacher/students/classrooms/${id}`);
+    }
+    getAllStudentsSearch(name,id)  {
+        return http.get(`teacher/search/not_in/class/${id}/students/${name}`);
     }
 
     showStudent(classID,stuID){

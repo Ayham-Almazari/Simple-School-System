@@ -1,13 +1,13 @@
 import axios from "axios"
 import Cookies from "js-cookie"
 import * as types from "./mutations_types"
+import TeacherClassesDataService from "./HTTP_SERVICE/TeacherClassesDataService";
 
 //state
 const state = {
     user : null,
     token: Cookies.get("token"),
     auth_error:null,
-    loading:false,
     isLogged:false
 }
 
@@ -21,25 +21,24 @@ const getters = {
 //mutations
 const mutations ={
     [types.SAVE_TOKEN](state,{token , remember}){
-        state["auth/isLogged"]=true
+        state.isLogged=true
         state.token = token
         Cookies.set("token", token , {expires: remember ? 14 : null})
     },
     [types.FETCH_USER_SUCCESS](state,{user}){
-        state["auth/isLogged"]=true
+        state.isLogged=true
         state.user = user.data.user
     },
     [types.FETCH_USER_FAILURE](state){
-        state["auth/isLogged"]=false
-        state.token = token
-        Cookies.remove ('token')
+        state.isLogged=false
+        state.token = null
+        Cookies.remove('token')
     },
     [types.LOGOUT](state) {
-        state["auth/isLogged"]=false
-        state.user = null;
-        state.token = null;
-        Cookies.remove("token");
-        state.isLogged = false;
+        state.isLogged=false
+        state.user = null
+        state.token = null
+        Cookies.remove("token")
     }
 }
 
@@ -48,13 +47,19 @@ const actions ={
     saveToken({commit},payload){
     commit(types.SAVE_TOKEN ,payload)
     },
-    async fetchUser({commit}) {
-        try {
-            const {data} = await axios.get('/api/v1/auth/teacher/user')
-            commit(types.FETCH_USER_SUCCESS ,{user:data})
-        } catch (error) {
-            commit(types.FETCH_USER_FAILURE)
-        }
+    fetchUser({commit}) {
+        TeacherClassesDataService.getUserAuth().then(({data}) => {
+            commit(types.FETCH_USER_SUCCESS, {user: data})
+        }).catch((errors) => {
+            console.log(errors.response.data)
+            // commit(types.FETCH_USER_FAILURE)
+        })
+    },
+    logout({commit}){
+      TeacherClassesDataService.logout().then(()=>{
+          commit(types.LOGOUT)
+        }).catch()
+     commit(types.LOGOUT)
     }
 }
 

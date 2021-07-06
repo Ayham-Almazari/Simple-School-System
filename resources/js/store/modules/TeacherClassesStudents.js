@@ -1,15 +1,16 @@
-import axios from "axios";
 import TeacherClassesDataService from "./HTTP_SERVICE/TeacherClassesDataService";
 const state ={
-    ClassStudents:[],
+    ClassStudents:null,
     ClassStudent :null,
-    loading:false
+    loading:false,
+    whileStudentsLoading:false
 }
 
 const getters = {
     ClassStudents:state =>state.ClassStudents,
     ClassStudent:state =>state.ClassStudent,
-    isLoading:state =>state.loading
+    isLoading:state =>state.loading,
+    studentLoading:state => state.whileStudentsLoading
 }
 
 const mutations = {
@@ -20,17 +21,19 @@ const mutations = {
     fetchTeacherClassroomStudent(state , {ClassStudent}) {
         state.ClassStudent = ClassStudent.data
         state.loading = false
-
     },
 
 }
 
 const actions = {
     fetchTeacherStudents({commit},id){
+        state.whileStudentsLoading = true
         TeacherClassesDataService.getAllStudents(id).then(({data})=>{
             commit("fetchTeacherClassroomStudents",{ClassStudents:data})
+            state.whileStudentsLoading = false
         }).catch ((err)=>{
             console.log(err)
+            state.whileStudentsLoading = false
         })
         },
     fetchTeacherClassroomStudent({commit}, {classID, stuID}){
@@ -43,24 +46,8 @@ const actions = {
             state.loading = false
         })
     },
-    updateTeacherClassroomStudentMark(classID,stuID ,data){
-        TeacherClassesDataService.updateStudentMarks(classID,stuID,data).then(({data})=>{
-            console.log(data)
-        }).catch ((err)=>{
-            console.log(err)
-        })
-    },
-    addStudentToClassroom(classID,stuID ,data){
-        TeacherClassesDataService.storeStudent(classID,stuID,data).then(({data})=>{
-            console.log(data)
-        }).catch ((err)=>{
-            console.log(err)
-        })
-    },
     removeStudentFromClassroom({commit},{classID,stuID}){
-        TeacherClassesDataService.removeStudentFromClass(classID,stuID).then(({data})=>{
-            console.log(data)
-        }).catch ((err)=>{
+        TeacherClassesDataService.removeStudentFromClass(classID,stuID).catch ((err)=>{
             console.log(err)
         })
     }

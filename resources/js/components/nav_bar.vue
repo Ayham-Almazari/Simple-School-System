@@ -13,11 +13,14 @@
                     <li class="nav-item">
                         <router-link :to="{ name : 'TeacherIndex' }"  class="nav-link text-white"> Classrooms </router-link>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="!isLogged">
                         <router-link :to="{ name : 'login' }"  class="nav-link text-white"> Log In </router-link>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="!isLogged">
                         <router-link :to="{ name : 'register' }"  class="nav-link text-white"> Sign Up </router-link>
+                    </li>
+                    <li class="nav-item" v-if="isLogged">
+                        <button @click="logout"  class="bg-dark nav-link text-white"> LOGOUT </button>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="text-white nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -44,12 +47,16 @@
 import {mapGetters} from "vuex"
     export default {
         computed:{
-            check(state) {
-                return this.$store.getters['auth/check'];
+          ...mapGetters({
+                  isLogged:"auth/check"
+              })
+        },
+        methods:{
+            logout(){
+                this.$store.dispatch("auth/logout")
+                this.$router.push({name:"home"})
             }
         }
-
-
     }
 
 </script>

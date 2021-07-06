@@ -4,7 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 import Vue from "vue";
-import router from './routes/index.js'
+import router from './routes/Teacher/index.js'
 import store from './store/index.js'
 import 'bootstrap';
 import VModal from 'vue-js-modal'
