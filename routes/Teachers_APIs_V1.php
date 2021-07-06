@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:teacher')->prefix('teacher')->namespace('API\TeacherControllers')->group(function () {
 Route::apiResource('classrooms', TeachersClassesController::class);
+Route::apiResource('materials', TeacherClassMaterials::class);
 Route::get('students/classrooms/{classroom}', [TeacherClassStudentController::class,'index']);
 Route::get('search/not_in/class/{id}/students/{name?}', [TeacherClassStudentController::class,'AllStudents']);
 Route::get('add/classrooms/{classroom}/students/{student}',[TeacherClassStudentController::class,'store']);

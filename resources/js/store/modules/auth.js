@@ -1,4 +1,3 @@
-import axios from "axios"
 import Cookies from "js-cookie"
 import * as types from "./mutations_types"
 import TeacherClassesDataService from "./HTTP_SERVICE/TeacherClassesDataService";
