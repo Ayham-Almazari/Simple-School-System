@@ -1,8 +1,10 @@
 <template>
 <div class="container">
-<div v-for="material in Materials">
-    <div v-html="material.material_description"></div>
-    <a :href="'http://localhost:8000/storage/' +material.material">material</a>
+<div v-for="material in Materials" class="container-fluid d-flex flex-column">
+    <div class="card mb-4">
+        <span class="card-title"><i class="fa fa-file-alt"></i> <a :href="'http://localhost:8000/storage/' +material.material">material</a></span>
+        <div v-html="material.material_description" class="card-text"></div>
+    </div>
 </div>
 </div>
 </template>

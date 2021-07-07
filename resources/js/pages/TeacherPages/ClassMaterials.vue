@@ -1,6 +1,6 @@
 <template>
     <div>
-    <div class="btn-group dropend">
+    <div class="btn-group dropend mb-5">
         <!-- Split dropend button -->
         <div class="btn-group dropend">
             <router-link :to="{name:'ClassMaterials'}" class="btn btn-secondary">Class Materials</router-link>
