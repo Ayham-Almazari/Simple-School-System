@@ -16,8 +16,8 @@ class CreateClassMaterialsTable extends Migration
         Schema::create('class_materials', function (Blueprint $table) {
             $table->id();
             $table->foreignId('classroom_id')->constrained('classrooms')->cascadeOnDelete();
-            $table->text('material');
-            $table->text('material_description');
+            $table->text('material')->nullable();
+            $table->text('material_description')->nullable();
             $table->timestamps();
             $table->engine = 'InnoDB';
         });

@@ -47,7 +47,7 @@
                 style="text-decoration: line-through;color: red">{{ student.name }}</span> From
                 <i>{{ Classroom.class_name }}</i> Class .
             </div>
-            <button class="btn btn-outline-danger" v-on:click="removeStudent" :disabled="isLoading" form>Remove
+            <button class="btn btn-outline-danger" v-on:click="removeStudent" :disabled="isLoading">Remove
                 Student
             </button>
         </sweet-modal>

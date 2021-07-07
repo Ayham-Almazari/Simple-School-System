@@ -26,6 +26,7 @@ Vue.use(SweetModal)
 
 Vue.component('nav_bar', require('./components/nav_bar.vue').default);
 Vue.component('ClassroomForm', require('./components/ClassroomForm.vue').default);
+Vue.component('addClassroomMaterial', require('./components/addClassroomMaterial.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

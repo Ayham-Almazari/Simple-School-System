@@ -5,6 +5,7 @@ import ClassMaterials from "../../pages/TeacherPages/ClassMaterials";
 import ClassroomForm from "../../components/ClassroomForm"
 import auth from "../../middlewares/auth";
 import authCheck from "../../middlewares/auth-check";
+import {TeacherClassMaterialsRoutes} from "./TeacherClassMaterialsRoutes";
 export const TeacherRoutes =  [
     {
         path: "",
@@ -15,7 +16,7 @@ export const TeacherRoutes =  [
         }
     },
     {
-        path: "classrooms/:classroom",
+        path: ":classroom",
         component: ViewClassroom,
         name:"viewClassroom",
         meta:{
@@ -33,10 +34,10 @@ export const TeacherRoutes =  [
             {
                 path: "materials",
                 component: ClassMaterials,
-                name:"ClassMaterials",
                 meta:{
                     middleware: [auth,authCheck]
-                }
+                },
+                children:TeacherClassMaterialsRoutes
             },
             {
                 path: "edit",

@@ -55,7 +55,10 @@ class TeacherClassesDataService {
         return http.delete(`teacher/classrooms/${classID}/students/${stuID}`)
     }
 
-
+    //materials
+    getAllMaterials(id)  {
+        return http.get(`http://127.0.0.1:8000/api/v1/teacher/classrooms/${id}/materials`);
+    }
 }
 
 export default new TeacherClassesDataService();

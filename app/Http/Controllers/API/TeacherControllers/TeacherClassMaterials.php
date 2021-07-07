@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\API\TeacherControllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CreateClassMaterial;
 use App\Http\Resources\MaterialResource;
+use App\Models\ClassRoom;
 use Illuminate\Http\Request;
 
 class TeacherClassMaterials extends Controller
@@ -25,14 +27,21 @@ class TeacherClassMaterials extends Controller
         endif;
     }
 
+    public function getRelationalMaterial($ClassroomID){
+          return $this->Teacher_classes_property->find($ClassroomID)->class_materials();
+    }
+    public function getRelationalProperty($ClassroomID){
+          return $this->Teacher_classes_property->find($ClassroomID)->class_materials;
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ClassRoom $classRoom)
     {
-        return MaterialResource::collection($this->Teacher_material_property);
+        return MaterialResource::collection($this->getRelationalProperty($classRoom->id));
     }
 
     /**
@@ -41,10 +50,34 @@ class TeacherClassMaterials extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CreateClassMaterial $request,ClassRoom $classRoom)
     {
-      $path =  $request->file('file')->store('TracherMaterials' , "public");
-      return $path;
+        try {
+            if($request->file('file')):
+                get_file_name:{
+                $file = $request->file('file');
+                //get name of file
+                $fileName = $file->getClientOriginalName();
+                //strip out all spaces
+                $fileName = str_replace(' ', '',$fileName);
+            }
+                create_material_to_get_id_to_be_file_name:{
+                $new_material=  $this->getRelationalMaterial($classRoom->id)->create($request->only('material_description'));
+            }
+                Store_material_in_storage_And_database:{
+                $path =  $file->storeAs('TreacheryMaterials/'.$new_material->id , $fileName,"public");
+                if (!$path){
+                    $new_material->delete();
+                    return $this->returnErrorMessage('File Error Uploading .');
+                }
+                $new_material->update(['material'=>$path]);
+            }
+            endif;
+        }catch (\Exception $e){
+                //TODO MAKE CUSTOM EXEPTION
+        }
+        response:
+        return $this->returnSuccessMessage("Material Added To Class {$classRoom->class_name} Successfully .");
     }
 
     /**

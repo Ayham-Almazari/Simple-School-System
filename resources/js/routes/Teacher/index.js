@@ -34,7 +34,7 @@ const router = new VueRouter({
             }
         },
         {
-            path:'/teachers',
+            path:'/teacher/classrooms',
             component:index,
             children:TeacherRoutes
         }

@@ -32,6 +32,7 @@ const mutations ={
         state.isLogged=false
         state.token = null
         Cookies.remove('token')
+        this.$router.push({name:'login'})
     },
     [types.LOGOUT](state) {
         state.isLogged=false
@@ -50,7 +51,6 @@ const actions ={
         TeacherClassesDataService.getUserAuth().then(({data}) => {
             commit(types.FETCH_USER_SUCCESS, {user: data})
         }).catch((errors) => {
-            console.log(errors.response.data)
             // commit(types.FETCH_USER_FAILURE)
         })
     },
